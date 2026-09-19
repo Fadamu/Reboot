@@ -1,8 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #090b0e;
+  --foreground: #f4f4f1;
+
+  --reboot-black: #090b0e;
+  --reboot-surface: #0c0f13;
+  --reboot-surface-2: #13181d;
+  --reboot-red: #dc4b4b;
+  --reboot-red-bright: #f26666;
+  --reboot-red-dark: #411516;
+  --reboot-border: rgba(255, 255, 255, 0.07);
+}
+
+html[data-theme="light"] {
+  --background: #f4f5f2;
+  --foreground: #17191c;
+
+  --reboot-black: #f4f5f2;
+  --reboot-surface: #ffffff;
+  --reboot-surface-2: #eef0ed;
+  --reboot-border: rgba(17, 24, 39, 0.1);
 }
 
 @theme inline {
@@ -12,15 +30,204 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--reboot-border);
+}
+
+html {
+  background: var(--reboot-black);
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(210, 159, 69, 0.08),
+      transparent 38rem
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(73, 93, 111, 0.12),
+      transparent 32rem
+    ),
+    var(--reboot-black);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  min-height: 100vh;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+html[data-theme="light"] body {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(210, 159, 69, 0.1),
+      transparent 38rem
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(73, 93, 111, 0.06),
+      transparent 32rem
+    ),
+    var(--reboot-black);
+}
+
+::selection {
+  background: rgba(251, 191, 36, 0.35);
+  color: white;
+}
+
+* {
+  scrollbar-color: #3f4852 #0c0f13;
+}
+
+html[data-theme="light"] * {
+  scrollbar-color: #aab0b5 #eef0ed;
+}
+
+:focus-visible {
+  outline: 2px solid #fcd34d;
+  outline-offset: 3px;
+}
+
+/*
+  Shared shell light-mode overrides.
+  Most REBOOT pages use Tailwind utility colors directly, so these
+  keep the existing pages readable when the global theme switches.
+*/
+html[data-theme="light"] .bg-\[\#090b0e\] {
+  background-color: #f4f5f2 !important;
+}
+
+html[data-theme="light"] .bg-\[\#0c0f13\] {
+  background-color: #ffffff !important;
+}
+
+html[data-theme="light"] .text-white {
+  color: #17191c !important;
+}
+
+html[data-theme="light"] .text-zinc-100 {
+  color: #272b30 !important;
+}
+
+html[data-theme="light"] .text-zinc-200 {
+  color: #343940 !important;
+}
+
+html[data-theme="light"] .text-zinc-300 {
+  color: #4b535c !important;
+}
+
+html[data-theme="light"] .text-zinc-400 {
+  color: #68717a !important;
+}
+
+html[data-theme="light"] .text-zinc-500 {
+  color: #7b858e !important;
+}
+
+html[data-theme="light"] .text-zinc-600 {
+  color: #89929a !important;
+}
+
+html[data-theme="light"] .border-white\/10 {
+  border-color: rgba(17, 24, 39, 0.1) !important;
+}
+
+html[data-theme="light"] .border-white\/5 {
+  border-color: rgba(17, 24, 39, 0.06) !important;
+}
+
+html[data-theme="light"] .bg-white\/\[0\.04\] {
+  background-color: rgba(17, 24, 39, 0.04) !important;
+}
+
+html[data-theme="light"] .bg-white\/\[0\.06\] {
+  background-color: rgba(17, 24, 39, 0.06) !important;
+}
+
+html[data-theme="light"] .hover\:bg-white\/\[0\.06\]:hover {
+  background-color: rgba(17, 24, 39, 0.06) !important;
+}
+
+/* Page-level dark surfaces used by the authenticated screens. */
+html[data-theme="light"] .bg-\[\#07090d\],
+html[data-theme="light"] .bg-\[\#070a0f\],
+html[data-theme="light"] .bg-\[\#080808\],
+html[data-theme="light"] .bg-\[\#08090c\],
+html[data-theme="light"] .bg-\[\#0d0a0b\] {
+  background-color: var(--reboot-black) !important;
+}
+
+html[data-theme="light"] .bg-\[\#0d0f14\],
+html[data-theme="light"] .bg-\[\#0d1118\],
+html[data-theme="light"] .bg-\[\#111318\],
+html[data-theme="light"] .bg-\[\#111418\],
+html[data-theme="light"] .bg-\[\#11161a\] {
+  background-color: var(--reboot-surface) !important;
+}
+
+/* Translucent dark panels and white-on-dark component layers. */
+html[data-theme="light"] .bg-black\/10,
+html[data-theme="light"] .bg-black\/20,
+html[data-theme="light"] .bg-black\/30 {
+  background-color: rgba(17, 24, 39, 0.04) !important;
+}
+
+html[data-theme="light"] .bg-black\/70 {
+  background-color: rgba(17, 24, 39, 0.58) !important;
+}
+
+html[data-theme="light"] .bg-white\/5,
+html[data-theme="light"] .bg-white\/10,
+html[data-theme="light"] .bg-white\/\[0\.02\],
+html[data-theme="light"] .bg-white\/\[0\.03\],
+html[data-theme="light"] .bg-white\/\[0\.035\],
+html[data-theme="light"] .bg-white\/\[0\.045\],
+html[data-theme="light"] .bg-white\/\[0\.05\] {
+  background-color: rgba(17, 24, 39, 0.04) !important;
+}
+
+html[data-theme="light"] .hover\:bg-white\/5:hover,
+html[data-theme="light"] .hover\:bg-white\/10:hover,
+html[data-theme="light"] .hover\:bg-white\/\[0\.03\]:hover,
+html[data-theme="light"] .hover\:bg-white\/\[0\.05\]:hover {
+  background-color: rgba(17, 24, 39, 0.07) !important;
+}
+
+html[data-theme="light"] .border-white\/20,
+html[data-theme="light"] .border-white\/30 {
+  border-color: rgba(17, 24, 39, 0.16) !important;
+}
+
+/* The planner and materials screens use white opacity for their muted copy. */
+html[data-theme="light"] .text-white\/75 {
+  color: #343940 !important;
+}
+
+html[data-theme="light"] .text-white\/70,
+html[data-theme="light"] .text-white\/60 {
+  color: #4b535c !important;
+}
+
+html[data-theme="light"] .text-white\/55,
+html[data-theme="light"] .text-white\/50,
+html[data-theme="light"] .text-white\/45 {
+  color: #5f6872 !important;
+}
+
+html[data-theme="light"] .text-white\/40,
+html[data-theme="light"] .text-white\/35,
+html[data-theme="light"] .text-white\/30,
+html[data-theme="light"] .text-white\/25,
+html[data-theme="light"] .text-white\/20 {
+  color: #747e88 !important;
+}
+
+html[data-theme="light"] .placeholder\:text-white\/25::placeholder,
+html[data-theme="light"] .placeholder\:text-white\/20::placeholder {
+  color: #7b858e !important;
 }

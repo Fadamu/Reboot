@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  studentId String?  @unique
+  student   Student? @relation(fields: [studentId], references: [id], onDelete: SetNull)
+}
+
+model Student {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user             User?
+  courses          Course[]
+  semesters        Semester[]
+  academicProfile  AcademicProfile?
+}
+
+model Semester {
+  id        String   @id @default(cuid())
+  session   String
+  name      String
+  studentId String
+  createdAt DateTime @default(now())
+
+  student  Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  courses  Course[]
+  results  Result[]
+
+  @@unique([studentId, session, name])
+}
+
+model Course {
+  id         String   @id @default(cuid())
+  code       String
+  name       String
+  units      Int
+  studentId  String
+  semesterId String
+  createdAt  DateTime @default(now())
+
+  student       Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  semester      Semester       @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  notes         Note[]
+  results       Result[]
+  studySessions StudySession[]
+  studyTopics   StudyTopic[]
+
+  @@unique([studentId, semesterId, code])
+}
+
+model Result {
+  id         String   @id @default(cuid())
+  grade      String
+  gradePoint Float
+  courseId   String
+  semesterId String
+  createdAt  DateTime @default(now())
+
+  semester Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, semesterId])
+}
+
+model StudySession {
+  id        String   @id @default(cuid())
+  date      DateTime
+  startTime String
+  endTime   String
+  topic     String
+  completed Boolean  @default(false)
+  notes     String?
+  courseId  String
+  createdAt DateTime @default(now())
+  deleted   Boolean  @default(false)
+
+  course    Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  questions StudyQuestion[]
+}
+
+model StudyQuestion {
+  id          String       @id @default(cuid())
+  question   String
+  type        String       @default("MULTIPLE_CHOICE")
+  options     String?
+  answer      String
+  explanation String?
+  source      String?
+  topic      String?
+  userAnswer  String?
+  isCorrect   Boolean?
+  createdAt   DateTime @default(now())
+
+  sessionId String
+  session   StudySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  fileName  String?
+  fileType  String?
+  filePath  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model StudyTopic {
+  id        String   @id @default(cuid())
+  name      String
+  courseId  String
+  createdAt DateTime @default(now())
+  deleted   Boolean  @default(false)
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, name])
+}
+
+model AcademicProfile {
+  id                   String   @id @default(cuid())
+  studentId            String   @unique
+  school               String
+  department           String
+  program              String
+  programDurationYears Int
+  startYear            Int
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
