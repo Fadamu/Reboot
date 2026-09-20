@@ -1,8 +1,14 @@
-import { PrismaClient } from "@prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+﻿import { PrismaClient } from "@prisma/client";
+import { PrismaNeon } from "@prisma/adapter-neon";
 
-const adapter = new PrismaBetterSqlite3({
-  url: "file:./prisma/dev.db",
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not configured.");
+}
+
+const adapter = new PrismaNeon({
+  connectionString,
 });
 
 export const prisma = new PrismaClient({

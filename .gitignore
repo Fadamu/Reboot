@@ -42,3 +42,4 @@ next-env.d.ts
 
 # Local Prisma SQLite database
 prisma/dev.db
+.vercel
