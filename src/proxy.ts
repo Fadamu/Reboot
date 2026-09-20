@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+﻿import { auth } from "@/auth";
 
 export default auth((request) => {
   const isLoggedIn = !!request.auth;
@@ -8,14 +8,14 @@ export default auth((request) => {
     pathname === "/login" ||
     pathname === "/register";
 
-  // Not logged in → authentication pages only
+  // Not logged in â†’ authentication pages only
   if (!isLoggedIn && !isAuthPage) {
     return Response.redirect(
       new URL("/login", request.url)
     );
   }
 
-  // Already logged in → don't show login/register again
+  // Already logged in â†’ don't show login/register again
   if (isLoggedIn && isAuthPage) {
     return Response.redirect(
       new URL("/", request.url)
@@ -28,3 +28,4 @@ export const config = {
     "/((?!api|_next/static|_next/image|.*\\.(?:png|jpg|jpeg|svg|ico)$).*)",
   ],
 };
+
